@@ -1,0 +1,84 @@
+import 'package:chewie/chewie.dart';
+import 'package:flutter/material.dart';
+import 'package:video_player/video_player.dart';
+
+import '../modelClasses_And_Mixin/modelClassOfData.dart';
+
+class ChewieVideoPlayer extends StatefulWidget {
+  const ChewieVideoPlayer({super.key, required this.modelClassOfData});
+  final ModelClassOfData modelClassOfData;
+
+  @override
+  State<ChewieVideoPlayer> createState() => _ChewieVideoPlayerState();
+}
+
+class _ChewieVideoPlayerState extends State<ChewieVideoPlayer> {
+  late VideoPlayerController _videoPlayerController;
+  late ChewieController _chewieController;
+
+  @override
+  void initState() {
+    super.initState();
+    _videoPlayerController =
+        VideoPlayerController.asset(widget.modelClassOfData.videoUrl)
+          ..addListener(() {
+            setState(() {});
+          });
+    _chewieController = _chewieController = ChewieController(
+      videoPlayerController: _videoPlayerController,
+      autoPlay: true,
+      looping: true,
+      allowMuting: true,
+      allowFullScreen: true,
+      allowPlaybackSpeedChanging: true,
+      hideControlsTimer: const Duration(seconds: 5),
+      showControls: true,
+      aspectRatio: _videoPlayerController.value.aspectRatio,
+      allowedScreenSleep: true,
+      subtitle: Subtitles([
+        Subtitle(
+            index: 1,
+            start: const Duration(milliseconds: 200),
+            end: const Duration(milliseconds: 200),
+            text: 'This is subtitle ')
+      ]),
+    );
+  }
+
+  @override
+  void dispose() {
+    _chewieController.dispose();
+    _videoPlayerController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.grey,
+      appBar: AppBar(
+        backgroundColor: Colors.black.withOpacity(0.6),
+        title: Text(
+          widget.modelClassOfData.title,
+          style: const TextStyle(color: Colors.white),
+        ),
+      ),
+      body: Column(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
+        Expanded(
+            child: _chewieController.videoPlayerController.value.isInitialized
+                ? AspectRatio(
+                    aspectRatio: _chewieController
+                        .videoPlayerController.value.aspectRatio,
+                    child: Chewie(controller: _chewieController),
+                  )
+                : Container(
+                    color: Colors.grey,
+                    child: const Center(
+                        child: CircularProgressIndicator(
+                      color: Color.fromARGB(255, 255, 17, 0),
+                    )),
+                  )),
+      ]),
+    );
+  }
+}
