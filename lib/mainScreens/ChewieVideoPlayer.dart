@@ -7,6 +7,7 @@ import '../modelClasses_And_Mixin/modelClassOfData.dart';
 class ChewieVideoPlayer extends StatefulWidget {
   const ChewieVideoPlayer({super.key, required this.modelClassOfData});
   final ModelClassOfData modelClassOfData;
+  static const activityName = '/chewieVideoPlayerScreen';
 
   @override
   State<ChewieVideoPlayer> createState() => _ChewieVideoPlayerState();
@@ -55,7 +56,7 @@ class _ChewieVideoPlayerState extends State<ChewieVideoPlayer> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey,
+      backgroundColor: const Color.fromARGB(255, 36, 35, 35),
       appBar: AppBar(
         backgroundColor: Colors.black.withOpacity(0.6),
         title: Text(
@@ -72,7 +73,7 @@ class _ChewieVideoPlayerState extends State<ChewieVideoPlayer> {
                     child: Chewie(controller: _chewieController),
                   )
                 : Container(
-                    color: Colors.grey,
+                    color: const Color.fromARGB(255, 36, 35, 35),
                     child: const Center(
                         child: CircularProgressIndicator(
                       color: Color.fromARGB(255, 255, 17, 0),

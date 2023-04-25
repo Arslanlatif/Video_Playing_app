@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 class DetailScreen extends StatefulWidget {
   const DetailScreen({super.key, required this.modelClassOfData});
   final ModelClassOfData modelClassOfData;
+  static const activityName = '/detailScreen';
 
   @override
   State<DetailScreen> createState() => _DetailScreenState();
@@ -20,17 +21,17 @@ class _DetailScreenState extends State<DetailScreen> {
     final clientHeight = screenHeight - kToolbarHeight - topBarHeight;
 
     return Scaffold(
-      backgroundColor: Colors.grey,
+      backgroundColor: Colors.black,
       appBar: AppBar(
-        backgroundColor: Colors.black.withOpacity(0.6),
+        backgroundColor: const Color.fromARGB(255, 36, 35, 35),
         title: Text(
           widget.modelClassOfData.title,
-          style: const TextStyle(color: Colors.white),
+          style: TextStyle(color: Colors.grey.withOpacity(0.9)),
         ),
       ),
       body: Container(
         height: clientHeight,
-        color: Colors.grey,
+        color: Colors.black,
         child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -44,7 +45,7 @@ class _DetailScreenState extends State<DetailScreen> {
                     child: Expanded(
                         flex: 3,
                         child: Container(
-                            color: Colors.grey,
+                            color: Colors.black,
                             height: clientHeight * 0.4,
                             child: Image.asset(
                                 widget.modelClassOfData.posterImage))),
@@ -88,11 +89,15 @@ class _DetailScreenState extends State<DetailScreen> {
                   child: Padding(
                     padding: EdgeInsets.only(left: screenWidth * 0.05),
                     child: Chip(
+                      shape: RoundedRectangleBorder(
+                          borderRadius:
+                              BorderRadius.circular(screenWidth * 0.02)),
+                      shadowColor: Colors.grey.withOpacity(0.2),
+                      backgroundColor: const Color.fromARGB(255, 36, 35, 35),
+                      elevation: 10,
                       label: Text(widget.modelClassOfData.title),
-                      elevation: 20,
-                      shadowColor: Colors.black,
                       labelStyle: const TextStyle(
-                        color: Colors.black,
+                        color: Colors.grey,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -110,7 +115,9 @@ class _DetailScreenState extends State<DetailScreen> {
                       scrollDirection: Axis.vertical,
                       child: Text(
                         widget.modelClassOfData.dicription,
-                        style: const TextStyle(color: Colors.black),
+                        style: const TextStyle(
+                          color: Colors.grey,
+                        ),
                       )),
                 ),
               ),

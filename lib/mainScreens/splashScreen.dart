@@ -1,3 +1,4 @@
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:arflix/mainScreens/getStartedScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -21,7 +22,7 @@ class _SplashScreenState extends State<SplashScreen>
     super.initState();
     // Animation Controller
     animationController =
-        AnimationController(vsync: this, duration: const Duration(seconds: 4))
+        AnimationController(vsync: this, duration: const Duration(seconds: 3))
           ..addStatusListener((status) {
             if (status == AnimationStatus.completed) {
               Navigator.pushReplacementNamed(
@@ -44,16 +45,23 @@ class _SplashScreenState extends State<SplashScreen>
       value: const SystemUiOverlayStyle(systemNavigationBarColor: Colors.black),
       child: Material(
         child: Container(
-          color: Colors.black,
-          child: FadeTransition(
+            color: Colors.black,
+            child: FadeTransition(
               opacity: opacityAnimation,
               child: Center(
-                child: Image.asset(
-                  'assets/images/netflixx.png',
-                  fit: BoxFit.cover,
+                child: TextLiquidFill(
+                  text: 'NETFLIX',
+                  waveColor: Colors.red,
+                  boxBackgroundColor: Colors.black,
+                  textStyle: TextStyle(
+                    fontSize: MediaQuery.of(context).size.height * 0.1,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  loadDuration: const Duration(seconds: 3),
+                  waveDuration: const Duration(seconds: 2),
                 ),
-              )),
-        ),
+              ),
+            )),
       ),
     );
   }

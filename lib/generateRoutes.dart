@@ -17,8 +17,8 @@ Route onGenerateRoute(RouteSettings settings) {
             const MyHomePage(),
         transitionsBuilder: (context, animation, secondaryAnimation, child) =>
             FadeTransition(opacity: animation, child: child),
-        reverseTransitionDuration: const Duration(seconds: 1),
-        transitionDuration: const Duration(seconds: 1));
+        reverseTransitionDuration: const Duration(seconds: 2),
+        transitionDuration: const Duration(seconds: 2));
   }
 
   //! SplashScreen
@@ -46,8 +46,8 @@ Route onGenerateRoute(RouteSettings settings) {
                   .animate(animation),
               child: child,
             ),
-        reverseTransitionDuration: const Duration(seconds: 1),
-        transitionDuration: const Duration(seconds: 1));
+        reverseTransitionDuration: const Duration(milliseconds: 500),
+        transitionDuration: const Duration(milliseconds: 500));
   }
 
   //! SignUpScreen
@@ -70,9 +70,11 @@ Route onGenerateRoute(RouteSettings settings) {
 
   // ! Search Screen
   else if (settings.name == SearchScreen.activityName) {
-    return MaterialPageRoute(
-      builder: (context) => const SearchScreen(),
-    );
+    return PageRouteBuilder(
+        pageBuilder: (context, animation, secondaryAnimation) =>
+            const SearchScreen(),
+        transitionDuration: const Duration(seconds: 1),
+        reverseTransitionDuration: const Duration(seconds: 1));
   }
 
   // ! ProfileScreen

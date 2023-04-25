@@ -39,6 +39,8 @@ dependencies:
   google_nav_bar: ^5.0.6
   video_player:
   chewie: ^1.4.0
+  animated_text_kit: ^4.2.2
+  neopop: ^1.0.2
 
 dev_dependencies:
   flutter_test:

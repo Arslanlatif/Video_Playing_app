@@ -1,7 +1,7 @@
 import 'package:arflix/mainScreens/signInScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
+import 'package:neopop/neopop.dart';
 import '../main.dart';
 import '../modelClasses_And_Mixin/validatorMixin.dart';
 
@@ -13,23 +13,36 @@ class SignUpScreen extends StatefulWidget {
   State<SignUpScreen> createState() => _SignUpScreenState();
 }
 
-class _SignUpScreenState extends State<SignUpScreen> with FormValidationMixin {
+class _SignUpScreenState extends State<SignUpScreen>
+    with FormValidationMixin, SingleTickerProviderStateMixin {
   bool isChecked = false;
 
   late TextEditingController _emailTEC, _passwordTEC;
   final FocusNode _emailFN = FocusNode();
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
+  late AnimationController animationController;
+  late Animation<Offset> offsetAnimation;
+
   @override
   void initState() {
     super.initState();
     _passwordTEC = TextEditingController();
     _emailTEC = TextEditingController();
+    animationController =
+        AnimationController(vsync: this, duration: const Duration(seconds: 1));
+    offsetAnimation = Tween(begin: const Offset(-1, 0), end: Offset.zero)
+        .animate(animationController)
+      ..addListener(() {
+        setState(() {});
+      });
+    animationController.forward();
   }
 
   @override
   void dispose() {
     _passwordTEC.dispose();
+    animationController.dispose();
     super.dispose();
   }
 
@@ -122,43 +135,48 @@ class _SignUpScreenState extends State<SignUpScreen> with FormValidationMixin {
                           top: clientHeight * 0.1,
                           left: screenWidth * 0.07,
                           right: screenWidth * 0.07),
-                      child: TextFormField(
-                        focusNode: _emailFN,
-                        controller: _emailTEC,
-                        // autofocus: true,
-                        cursorColor: Colors.black,
-                        autovalidateMode: AutovalidateMode.onUserInteraction,
-                        validator: emailValidation,
-                        decoration: InputDecoration(
-                          fillColor: Colors.white10,
-                          prefixIconColor: Colors.grey,
-                          prefixIcon: const Icon(Icons.email),
-                          filled: true,
-                          label: Text(
-                            'Email',
-                            style: TextStyle(color: Colors.grey.shade600),
-                          ),
-                          labelStyle: TextStyle(height: clientHeight * 0.006),
+                      child: SlideTransition(
+                        position: offsetAnimation,
+                        child: TextFormField(
+                          focusNode: _emailFN,
+                          controller: _emailTEC,
+                          keyboardType: TextInputType.emailAddress,
+                          // autofocus: true,
+                          cursorColor: Colors.black,
+                          autovalidateMode: AutovalidateMode.onUserInteraction,
+                          validator: emailValidation,
+                          decoration: InputDecoration(
+                            fillColor: Colors.white10,
+                            prefixIconColor: Colors.grey,
+                            prefixIcon: const Icon(Icons.email),
+                            filled: true,
+                            label: Text(
+                              'Email',
+                              style: TextStyle(color: Colors.grey.shade600),
+                            ),
+                            labelStyle: TextStyle(height: clientHeight * 0.006),
 
-                          // ! All Borders
-                          focusedBorder: OutlineInputBorder(
-                              borderSide: const BorderSide(
-                                color: Color.fromARGB(255, 127, 189, 129),
-                              ),
-                              borderRadius: BorderRadius.all(
-                                  Radius.circular(screenWidth * 0.004))),
-                          focusedErrorBorder: OutlineInputBorder(
-                              borderSide: const BorderSide(color: Colors.red),
-                              borderRadius: BorderRadius.all(
-                                  Radius.circular(screenWidth * 0.004))),
-                          errorBorder: OutlineInputBorder(
-                              borderSide: const BorderSide(color: Colors.red),
-                              borderRadius: BorderRadius.all(
-                                  Radius.circular(screenWidth * 0.004))),
-                          enabledBorder: OutlineInputBorder(
-                              borderSide: const BorderSide(color: Colors.grey),
-                              borderRadius: BorderRadius.all(
-                                  Radius.circular(screenWidth * 0.004))),
+                            // ! All Borders
+                            focusedBorder: OutlineInputBorder(
+                                borderSide: const BorderSide(
+                                  color: Color.fromARGB(255, 127, 189, 129),
+                                ),
+                                borderRadius: BorderRadius.all(
+                                    Radius.circular(screenWidth * 0.004))),
+                            focusedErrorBorder: OutlineInputBorder(
+                                borderSide: const BorderSide(color: Colors.red),
+                                borderRadius: BorderRadius.all(
+                                    Radius.circular(screenWidth * 0.004))),
+                            errorBorder: OutlineInputBorder(
+                                borderSide: const BorderSide(color: Colors.red),
+                                borderRadius: BorderRadius.all(
+                                    Radius.circular(screenWidth * 0.004))),
+                            enabledBorder: OutlineInputBorder(
+                                borderSide:
+                                    const BorderSide(color: Colors.grey),
+                                borderRadius: BorderRadius.all(
+                                    Radius.circular(screenWidth * 0.004))),
+                          ),
                         ),
                       ),
                     ),
@@ -169,49 +187,56 @@ class _SignUpScreenState extends State<SignUpScreen> with FormValidationMixin {
                           top: clientHeight * 0.02,
                           left: screenWidth * 0.07,
                           right: screenWidth * 0.07),
-                      child: TextFormField(
-                        controller: _passwordTEC,
-                        obscureText: _obsecure,
-                        cursorColor: Colors.black,
-                        autovalidateMode: AutovalidateMode.onUserInteraction,
-                        validator: paswodValidation,
-                        decoration: InputDecoration(
-                          prefixIconColor: Colors.grey,
-                          prefixIcon: const Icon(Icons.lock),
-                          fillColor: Colors.white,
-                          filled: true,
+                      child: SlideTransition(
+                        position:
+                            Tween(begin: const Offset(1, 0), end: Offset.zero)
+                                .animate(animationController),
+                        child: TextFormField(
+                          controller: _passwordTEC,
+                          obscureText: _obsecure,
+                          cursorColor: Colors.black,
+                          autovalidateMode: AutovalidateMode.onUserInteraction,
+                          validator: paswodValidation,
+                          decoration: InputDecoration(
+                            prefixIconColor: Colors.grey,
+                            prefixIcon: const Icon(Icons.lock),
+                            fillColor: Colors.white,
+                            filled: true,
 
-                          //! Password Hide or Unhide
-                          suffixIcon: IconButton(
-                              color: Colors.black,
-                              onPressed: () => _isVisible(),
-                              icon: Icon(_obsecure
-                                  ? Icons.visibility_off
-                                  : Icons.visibility)),
-                          label: Text(
-                            'Password',
-                            style: TextStyle(color: Colors.grey.shade600),
+                            //! Password Hide or Unhide
+                            suffixIcon: IconButton(
+                                color: Colors.black,
+                                onPressed: () => _isVisible(),
+                                icon: Icon(_obsecure
+                                    ? Icons.visibility_off
+                                    : Icons.visibility)),
+                            label: Text(
+                              'Password',
+                              style: TextStyle(color: Colors.grey.shade600),
+                            ),
+                            labelStyle: TextStyle(height: clientHeight * 0.006),
+
+                            // ! All borders
+                            focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Colors.blue.shade700,
+                                ),
+                                borderRadius: BorderRadius.all(
+                                    Radius.circular(screenWidth * 0.004))),
+                            enabledBorder: OutlineInputBorder(
+                                borderSide:
+                                    const BorderSide(color: Colors.grey),
+                                borderRadius: BorderRadius.all(
+                                    Radius.circular(screenWidth * 0.01))),
+                            focusedErrorBorder: OutlineInputBorder(
+                                borderSide: const BorderSide(color: Colors.red),
+                                borderRadius: BorderRadius.all(
+                                    Radius.circular(screenWidth * 0.004))),
+                            errorBorder: OutlineInputBorder(
+                                borderSide: const BorderSide(color: Colors.red),
+                                borderRadius: BorderRadius.all(
+                                    Radius.circular(screenWidth * 0.004))),
                           ),
-                          labelStyle: TextStyle(height: clientHeight * 0.006),
-                          // !
-                          focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: Colors.blue.shade700,
-                              ),
-                              borderRadius: BorderRadius.all(
-                                  Radius.circular(screenWidth * 0.004))),
-                          enabledBorder: OutlineInputBorder(
-                              borderSide: const BorderSide(color: Colors.grey),
-                              borderRadius: BorderRadius.all(
-                                  Radius.circular(screenWidth * 0.01))),
-                          focusedErrorBorder: OutlineInputBorder(
-                              borderSide: const BorderSide(color: Colors.red),
-                              borderRadius: BorderRadius.all(
-                                  Radius.circular(screenWidth * 0.004))),
-                          errorBorder: OutlineInputBorder(
-                              borderSide: const BorderSide(color: Colors.red),
-                              borderRadius: BorderRadius.all(
-                                  Radius.circular(screenWidth * 0.004))),
                         ),
                       ),
                     ),
@@ -240,43 +265,49 @@ class _SignUpScreenState extends State<SignUpScreen> with FormValidationMixin {
 
                     // ! Sign Up/CONTINUE Button
                     Padding(
-                      padding: EdgeInsets.only(
-                          top: clientHeight * 0.05,
-                          left: screenWidth * 0.07,
-                          right: screenWidth * 0.07),
-                      child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                              fixedSize: Size.fromHeight(clientHeight * 0.08),
-                              backgroundColor:
-                                  const Color.fromARGB(255, 255, 17, 0),
-                              side: const BorderSide(
-                                color: Colors.white,
-                              )),
-                          onPressed: () {
-                            if (formKey.currentState!.validate()) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(content: Text("Signing in")));
-                              _emailTEC.clear();
-                              _passwordTEC.clear();
-                              _emailFN.unfocus();
+                        padding: EdgeInsets.only(
+                            top: clientHeight * 0.05,
+                            left: screenWidth * 0.07,
+                            right: screenWidth * 0.07),
+                        child: Container(
+                          height: clientHeight * 0.1,
+                          color: Colors.white,
+                          child: NeoPopTiltedButton(
+                              onTapUp: () {},
+                              onTapDown: () {
+                                if (formKey.currentState!.validate()) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                          content: Text("Signing in")));
+                                  _emailTEC.clear();
+                                  _passwordTEC.clear();
+                                  _emailFN.unfocus();
 
-                              Navigator.pushNamed(
-                                  context, MyHomePage.activityName);
-                            } else {
-                              const ScaffoldMessenger(
-                                  child:
-                                      SnackBar(content: Text('Unsuccesful')));
-                            }
-                          },
-                          child: Center(
-                            child: Text(
-                              'CONTINUE',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: clientHeight * 0.03),
-                            ),
-                          )),
-                    ),
+                                  Navigator.pushNamed(
+                                      context, MyHomePage.activityName);
+                                } else {
+                                  const ScaffoldMessenger(
+                                      child: SnackBar(
+                                          content: Text('Unsuccesful')));
+                                }
+                              },
+                              isFloating: true,
+                              decoration: const NeoPopTiltedButtonDecoration(
+                                  showShimmer: true,
+                                  plunkColor: Color.fromARGB(255, 114, 68, 68),
+                                  shadowColor: Colors.grey,
+                                  color: Color.fromARGB(255, 255, 17, 0)),
+                              child: Center(
+                                child: Text(
+                                  'CONTINUE',
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: clientHeight * 0.03),
+                                ),
+                              )),
+                        )),
+
+                   
                   ]),
             ),
           ),
@@ -285,3 +316,37 @@ class _SignUpScreenState extends State<SignUpScreen> with FormValidationMixin {
     );
   }
 }
+/**
+                    // child: ElevatedButton(
+                    //     style: ElevatedButton.styleFrom(
+                    //         fixedSize: Size.fromHeight(clientHeight * 0.08),
+                    //         backgroundColor:
+                    //             const Color.fromARGB(255, 255, 17, 0),
+                    //         side: const BorderSide(
+                    //           color: Colors.white,
+                    //         )),
+                    //     onPressed: () {
+                    // if (formKey.currentState!.validate()) {
+                    //   ScaffoldMessenger.of(context).showSnackBar(
+                    //       const SnackBar(content: Text("Signing in")));
+                    //   _emailTEC.clear();
+                    //   _passwordTEC.clear();
+                    //   _emailFN.unfocus();
+
+                    //   Navigator.pushNamed(
+                    //       context, MyHomePage.activityName);
+                    // } else {
+                    //   const ScaffoldMessenger(
+                    //       child:
+                    //           SnackBar(content: Text('Unsuccesful')));
+                    // }
+                    //     },
+                    //     child: Center(
+                    //       child: Text(
+                    //         'CONTINUE',
+                    //         style: TextStyle(
+                    //             color: Colors.white,
+                    //             fontSize: clientHeight * 0.03),
+                    //       ),
+                    //     )),
+ */

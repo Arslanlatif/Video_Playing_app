@@ -21,7 +21,7 @@ mixin FormValidationMixin {
     }
     final regx = RegExp(
         r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
-    if (regx.hasMatch(value.toString())) {
+    if (!regx.hasMatch(value.toString())) {
       return 'Please enter a valid email address';
     }
     return null;

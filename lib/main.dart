@@ -1,4 +1,6 @@
 import 'package:arflix/mainScreens/detailScreen.dart';
+import 'package:arflix/mainScreens/signInScreen.dart';
+import 'package:arflix/mainScreens/signUpScreen.dart';
 import 'package:arflix/mainScreens/splashScreen.dart';
 import 'package:arflix/generateRoutes.dart';
 import 'package:flutter/material.dart';
@@ -20,7 +22,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute: SplashScreen.activityName,
+      initialRoute: MyHomePage.activityName,
       onGenerateRoute: onGenerateRoute,
     );
   }
@@ -47,25 +49,30 @@ class _MyHomePageState extends State<MyHomePage> {
       const ProfileScreen(),
     ];
 
+    //! WillPopScope is used to block going back to privious Screnn
     return WillPopScope(
       onWillPop: () async => false,
+
+      // ! AnnotatedRegion is used to change to system ui i.e botton bar.
       child: AnnotatedRegion(
-        value: SystemUiOverlayStyle(
-            systemNavigationBarColor: Colors.brown.withOpacity(0.2)),
+        value: const SystemUiOverlayStyle(
+          systemNavigationBarColor: Color.fromARGB(255, 36, 35, 35),
+        ),
         child: Scaffold(
             body: screens[currentIndex],
             // ! bottomNavigationBar
             bottomNavigationBar: Container(
-              color: Colors.brown.withOpacity(0.2),
+              color: const Color.fromARGB(255, 36, 35, 35),
               child: Padding(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                // Google navigation is a package
                 child: GNav(
                   gap: 8,
-                  backgroundColor: Colors.brown.withOpacity(0.0),
-                  color: Colors.white,
-                  activeColor: Colors.white,
-                  tabBackgroundColor: Colors.brown.withOpacity(0.4),
+                  color: const Color.fromARGB(255, 145, 145, 145),
+                  activeColor: const Color.fromARGB(255, 145, 145, 145),
+                  tabBackgroundColor:
+                      const Color.fromARGB(255, 66, 59, 56).withOpacity(0.4),
                   padding: const EdgeInsets.all(16),
                   selectedIndex: currentIndex,
                   onTabChange: (value) {
