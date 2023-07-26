@@ -16,6 +16,7 @@ class SignInScreen extends StatefulWidget {
 
 class _SignInScreenState extends State<SignInScreen>
     with FormValidationMixin, SingleTickerProviderStateMixin {
+      
   late TextEditingController _emailTEC, _passwordTEC;
   final FocusNode _emailFN = FocusNode();
   GlobalKey<FormState> formKey = GlobalKey<FormState>();

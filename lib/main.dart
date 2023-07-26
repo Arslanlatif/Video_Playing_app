@@ -1,6 +1,3 @@
-import 'package:arflix/mainScreens/detailScreen.dart';
-import 'package:arflix/mainScreens/signInScreen.dart';
-import 'package:arflix/mainScreens/signUpScreen.dart';
 import 'package:arflix/mainScreens/splashScreen.dart';
 import 'package:arflix/generateRoutes.dart';
 import 'package:flutter/material.dart';
@@ -22,7 +19,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute: MyHomePage.activityName,
+      initialRoute: SplashScreen.activityName,
       onGenerateRoute: onGenerateRoute,
     );
   }
@@ -49,11 +46,9 @@ class _MyHomePageState extends State<MyHomePage> {
       const ProfileScreen(),
     ];
 
-    //! WillPopScope is used to block going back to privious Screnn
+    // ! AnnotatedRegion is used to change to system ui i.e botton bar.
     return WillPopScope(
       onWillPop: () async => false,
-
-      // ! AnnotatedRegion is used to change to system ui i.e botton bar.
       child: AnnotatedRegion(
         value: const SystemUiOverlayStyle(
           systemNavigationBarColor: Color.fromARGB(255, 36, 35, 35),
